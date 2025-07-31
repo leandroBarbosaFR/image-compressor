@@ -1,7 +1,6 @@
 # *
 User-agent: *
 Allow: /
-
 # Host
 Host: https://squeezit.io
 
