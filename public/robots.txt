@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://squeezit.io
+
+# Sitemaps
+Sitemap: https://squeezit.io/sitemap.xml
