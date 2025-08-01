@@ -102,7 +102,7 @@ export default function HomePage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="relative flex flex-col items-center justify-center min-h-screen bg-background p-8 text-foreground overflow-hidden"
+      className="relative flex flex-col items-center justify-center min-h-dvh bg-background p-8 text-foreground overflow-hidden"
     >
       {/* BACKGROUND */}
       <div
@@ -162,24 +162,17 @@ export default function HomePage() {
             <SelectValue placeholder="From" />
           </SelectTrigger>
           <SelectContent className="bg-black/95 backdrop-blur-md text-white rounded-lg shadow-lg border border-white/10">
-            {[
-              "jpeg",
-              "png",
-              "webp",
-              "avif",
-              "gif",
-              "tiff",
-              "bmp",
-              "heic",
-            ].map((val) => (
-              <SelectItem
-                key={val}
-                value={val as ImageFormat}
-                className="cursor-pointer px-4 py-2 hover:bg-white/10 rounded-md transition-colors"
-              >
-                {val.toUpperCase()}
-              </SelectItem>
-            ))}
+            {["jpeg", "png", "webp", "avif", "gif", "tiff", "bmp", "heic"].map(
+              (val) => (
+                <SelectItem
+                  key={val}
+                  value={val as ImageFormat}
+                  className="cursor-pointer px-4 py-2 hover:bg-white/10 rounded-md transition-colors"
+                >
+                  {val.toUpperCase()}
+                </SelectItem>
+              )
+            )}
           </SelectContent>
         </Select>
 
@@ -197,24 +190,17 @@ export default function HomePage() {
             <SelectValue placeholder="To" />
           </SelectTrigger>
           <SelectContent className="bg-black/95 backdrop-blur-md text-white rounded-lg shadow-lg border border-white/10">
-            {[
-              "jpeg",
-              "png",
-              "webp",
-              "avif",
-              "gif",
-              "tiff",
-              "bmp",
-              "heic",
-            ].map((val) => (
-              <SelectItem
-                key={val}
-                value={val as ImageFormat}
-                className="cursor-pointer px-4 py-2 hover:bg-white/10 rounded-md transition-colors"
-              >
-                {val.toUpperCase()}
-              </SelectItem>
-            ))}
+            {["jpeg", "png", "webp", "avif", "gif", "tiff", "bmp", "heic"].map(
+              (val) => (
+                <SelectItem
+                  key={val}
+                  value={val as ImageFormat}
+                  className="cursor-pointer px-4 py-2 hover:bg-white/10 rounded-md transition-colors"
+                >
+                  {val.toUpperCase()}
+                </SelectItem>
+              )
+            )}
           </SelectContent>
         </Select>
       </motion.div>

@@ -39,7 +39,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="w-full bg-black flex flex-col md:flex-row items-center justify-between gap-4 py-6 px-6 text-gray-400 text-xs border-t border-gray-800">
+    <footer className="w-full bg-black flex flex-col md:flex-row items-center justify-between gap-4 py-6 px-6 text-gray-400 text-xs border-t border-gray-800 pb-[env(safe-area-inset-bottom)]">
       {/* LEFT: Time + City */}
       <div className="flex items-center gap-4 text-gray-500">
         <span className="flex items-center gap-1">
@@ -52,8 +52,8 @@ export default function Footer() {
 
       {/* CENTER: © 2025 + Icon + Title */}
       <div className="flex items-center gap-1 text-gray-500">
-        © {new Date().getFullYear()} 
-        <SiLemonsqueezy className="text-gray-500 text-sm" /> 
+        © {new Date().getFullYear()}
+        <SiLemonsqueezy className="text-gray-500 text-sm" />
         <span className="font-semibold text-gray-500">Squeezit</span>
       </div>
 
