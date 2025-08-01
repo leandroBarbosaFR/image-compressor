@@ -34,15 +34,10 @@ export const metadata: Metadata = {
         alt: "Squeezit Online Image Compressor",
       },
     ],
-    locale: "en_US",
+    locale: "en_GB",
     type: "website",
   },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch.png",
-  },
 };
-
 
 export default function RootLayout({
   children,
