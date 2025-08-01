@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #191919;
+    --background: #654654;
     --foreground: #fff;
 
     --font-sans: var(--font-geist-sans);
@@ -47,6 +47,6 @@ pre {
 }
 
 body {
-  background: var(--background);
+  background: #654987;
   color: var(--foreground);
 }
