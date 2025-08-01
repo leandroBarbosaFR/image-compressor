@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { track } from "@vercel/analytics";
 import {
   Select,
   SelectContent,
@@ -323,7 +324,10 @@ export default function HomePage() {
               </p>
 
               <button
-                onClick={() => downloadBase64File(file.url, file.filename)}
+                onClick={() => {
+                  downloadBase64File(file.url, file.filename);
+                  track("Download");
+                }}
                 className="inline-flex items-center justify-center gap-2 px-4 py-2 w-full text-sm font-medium text-primary border border-primary rounded-md transition-all hover:bg-primary hover:text-white touch-manipulation"
               >
                 <PiDownloadSimple className="text-lg" />
