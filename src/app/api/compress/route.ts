@@ -27,6 +27,7 @@ export async function POST(req: Request) {
     url: string;
     size: number;
     originalSize: number;
+    filename: string;
   }[] = [];
 
   for (const image of images) {
@@ -69,6 +70,7 @@ export async function POST(req: Request) {
       )}`,
       size,
       originalSize,
+      filename: `squeezit-${Date.now()}.${targetFormat}`,
     });
   }
 
