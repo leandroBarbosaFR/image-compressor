@@ -367,10 +367,18 @@ export default function HomePage() {
     const zip = new JSZip();
     const folder = zip.folder("squeezit-images");
 
-    for (const file of compressedFiles) {
-      const response = await fetch(file.url);
-      const blob = await response.blob();
-      folder?.file(file.url.split("/").pop() || "image.jpg", blob);
+    for (const [i, file] of compressedFiles.entries()) {
+      // Extract base64 part from data URL
+      const base64Data = file.url.split(",")[1];
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let j = 0; j < byteCharacters.length; j++) {
+        byteNumbers[j] = byteCharacters.charCodeAt(j);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      folder?.file(`image-${i + 1}.${targetFormat}`, byteArray);
     }
 
     const content = await zip.generateAsync({ type: "blob" });
