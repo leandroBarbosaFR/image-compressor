@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -23,6 +23,8 @@ import {
   PiArrowDown,
 } from "react-icons/pi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FiDownload, FiShare } from "react-icons/fi";
+import { AiOutlineHome } from "react-icons/ai";
 import Image from "next/image";
 
 type ImageFormat =
@@ -40,6 +42,12 @@ interface CompressedFile {
   size: number;
   originalSize: number;
   filename: string;
+}
+
+/** Types for PWA event */
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
 // Utility for mobile-safe downloads
@@ -70,6 +78,45 @@ export default function HomePage() {
   const [compressedFiles, setCompressedFiles] = useState<CompressedFile[]>([]);
   const [sourceFormat, setSourceFormat] = useState<ImageFormat>("jpeg");
   const [targetFormat, setTargetFormat] = useState<ImageFormat>("webp");
+
+  // PWA install state
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+
+  useEffect(() => {
+    // Detect iOS
+    const iOS =
+      /iPad|iPhone|iPod/.test(window.navigator.userAgent) &&
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      !(window as any).MSStream;
+    setIsIOS(iOS);
+
+    // Handle beforeinstallprompt (for Chrome/Android/Desktop)
+    const handler = (e: Event) => {
+      const event = e as BeforeInstallPromptEvent;
+      event.preventDefault();
+      setDeferredPrompt(event);
+      setShowInstallButton(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice;
+    if (choice.outcome === "accepted") {
+      console.log("✅ User accepted the install prompt");
+    } else {
+      console.log("❌ User dismissed the install prompt");
+    }
+    setDeferredPrompt(null);
+    setShowInstallButton(false);
+  };
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -123,7 +170,6 @@ export default function HomePage() {
     if (res.ok) {
       const data = await res.json();
 
-      // Add filename (for consistent download names)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const filesWithNames = data.files.map((f: any, i: number) => ({
         ...f,
@@ -188,6 +234,18 @@ export default function HomePage() {
         WebP, AVIF and more – all for free.
       </motion.p>
 
+      {/* iOS Install Instructions */}
+      {isIOS && (
+        <div className="bg-black text-white px-4 py-3 rounded-lg shadow-lg mb-4 text-sm max-w-md text-center z-10">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <FiShare size={16} /> Tap <strong>Share</strong>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <AiOutlineHome size={16} /> Then <strong>Add to Home Screen</strong>
+          </div>
+        </div>
+      )}
+
       {/* Format Selection */}
       <motion.div
         className="flex flex-col sm:flex-row gap-4 mb-6 sm:mb-8 relative z-10 w-full sm:w-auto justify-center px-4 sm:px-0"
@@ -198,7 +256,7 @@ export default function HomePage() {
           value={sourceFormat}
           onValueChange={(val: ImageFormat) => setSourceFormat(val)}
         >
-          <SelectTrigger className="w-full  cursor-pointer sm:w-[150px] bg-muted border rounded-md px-3 py-3 hover:border-primary transition touch-manipulation">
+          <SelectTrigger className="w-full cursor-pointer sm:w-[150px] bg-muted border rounded-md px-3 py-3 hover:border-primary transition touch-manipulation">
             <SelectValue placeholder="From" />
           </SelectTrigger>
           <SelectContent className="bg-black/95 backdrop-blur-md text-white rounded-lg shadow-lg border border-white/10">
@@ -277,27 +335,39 @@ export default function HomePage() {
       )}
 
       {/* Action buttons */}
-      {compressedFiles.length > 0 && (
-        <div className="flex flex-col gap-3 mt-6 mb-6 relative z-10 w-full max-w-lg px-4">
+      <div className="flex flex-col gap-3 mt-6 mb-6 relative z-10 w-full max-w-lg px-4">
+        {showInstallButton && !isIOS && (
           <button
-            onClick={handleClearAll}
-            className="flex items-center justify-center gap-2 px-4 py-3 w-full bg-white text-black rounded-md hover:bg-gray-100 transition cursor-pointer touch-manipulation"
+            onClick={handleInstall}
+            className="flex items-center justify-center gap-2 px-4 py-3 w-full bg-black text-white rounded-md hover:bg-gray-800 transition cursor-pointer touch-manipulation"
           >
-            <PiTrash className="text-lg" />
-            Clear All
+            <FiDownload className="text-lg" />
+            Install Squeezit App
           </button>
+        )}
 
-          {compressedFiles.length > 1 && (
+        {compressedFiles.length > 0 && (
+          <>
             <button
-              onClick={handleDownloadAll}
-              className="flex items-center justify-center gap-2 px-4 py-3 w-full bg-primary text-white rounded-md hover:bg-primary/80 cursor-pointer transition touch-manipulation"
+              onClick={handleClearAll}
+              className="flex items-center justify-center gap-2 px-4 py-3 w-full bg-white text-black rounded-md hover:bg-gray-100 transition cursor-pointer touch-manipulation"
             >
-              <PiArchive className="text-lg" />
-              Download All as ZIP
+              <PiTrash className="text-lg" />
+              Clear All
             </button>
-          )}
-        </div>
-      )}
+
+            {compressedFiles.length > 1 && (
+              <button
+                onClick={handleDownloadAll}
+                className="flex items-center justify-center gap-2 px-4 py-3 w-full bg-primary text-white rounded-md hover:bg-primary/80 cursor-pointer transition touch-manipulation"
+              >
+                <PiArchive className="text-lg" />
+                Download All as ZIP
+              </button>
+            )}
+          </>
+        )}
+      </div>
 
       {/* Images Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 relative z-10 w-full max-w-4xl px-4">
