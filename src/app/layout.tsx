@@ -2,6 +2,7 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Squeezit - Free Online Image Compressor & Converter",
@@ -46,6 +47,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3707272403739034"
+          crossOrigin="anonymous"
+        ></Script>
+      </head>
       <body className="flex flex-col min-h-screen">
         <ThemeProvider attribute="class" defaultTheme="dark">
           <main className="flex-1">{children}</main>
