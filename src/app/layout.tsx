@@ -17,18 +17,18 @@ export const metadata: Metadata = {
     "squeezit tool",
   ],
   alternates: {
-    canonical: "https://squeezit.com",
+    canonical: "https://www.squeezit.fr/",
   },
   authors: [{ name: "Squeezit" }],
   openGraph: {
     title: "Squeezit - Compress & Convert Images in Seconds",
     description:
       "Free online image compression and conversion tool. Supports JPEG, PNG, WebP, AVIF, HEIC and more.",
-    url: "https://squeezit.io",
+    url: "https://www.squeezit.fr/",
     siteName: "Squeezit",
     images: [
       {
-        url: "https://squeezit.com/og-image.png",
+        url: "https://www.squeezit.fr/og-image.png",
         width: 1200,
         height: 630,
         alt: "Squeezit Online Image Compressor",
