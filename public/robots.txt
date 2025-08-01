@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://squeezit.vercel.app/
+Host: https://www.squeezit.fr/
 
 # Sitemaps
-Sitemap: https://squeezit.vercel.app/sitemap.xml
+Sitemap: https://www.squeezit.fr/sitemap.xml

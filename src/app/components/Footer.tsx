@@ -39,7 +39,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="w-full bg-black flex flex-col md:flex-row items-center justify-between gap-4 py-6 px-6 text-gray-400 text-xs border-t border-gray-800 pb-[env(safe-area-inset-bottom)]">
+    <footer className="w-full bg-black flex flex-col md:flex-row items-center justify-between gap-4 py-6 px-6 text-gray-400 text-xs border-t border-gray-800">
       {/* LEFT: Time + City */}
       <div className="flex items-center gap-4 text-gray-500">
         <span className="flex items-center gap-1">
@@ -51,10 +51,26 @@ export default function Footer() {
       </div>
 
       {/* CENTER: © 2025 + Icon + Title */}
-      <div className="flex items-center gap-1 text-gray-500">
-        © {new Date().getFullYear()}
-        <SiLemonsqueezy className="text-gray-500 text-sm" />
-        <span className="font-semibold text-gray-500">Squeezit</span>
+      <div className="flex flex-col items-center gap-1 text-gray-500 md:flex-row md:gap-3">
+        <div className="flex items-center gap-1">
+          © {new Date().getFullYear()}
+          <SiLemonsqueezy className="text-gray-500 text-sm" />
+          <span className="font-semibold text-gray-500">Squeezit</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/legal/legal-notice"
+            className="hover:text-white transition"
+          >
+            Legal Notice
+          </Link>
+          <Link
+            href="/legal/privacy-policy"
+            className="hover:text-white transition"
+          >
+            Privacy Policy
+          </Link>
+        </div>
       </div>
 
       {/* RIGHT: Social Icons */}

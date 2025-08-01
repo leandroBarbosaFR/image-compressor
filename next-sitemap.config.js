@@ -1,4 +1,4 @@
 module.exports = {
-  siteUrl: "https://squeezit.vercel.app/",
+  siteUrl: "https://www.squeezit.fr/",
   generateRobotsTxt: true,
 };
