@@ -1,7 +1,13 @@
-import type { NextConfig } from "next";
+import withPWAInit from "next-pwa";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+const withPWA = withPWAInit({
+  dest: "public", // service worker will be generated here
+  register: true,
+  skipWaiting: true,
+});
+
+const nextConfig = withPWA({
+  /* your existing config options */
+});
 
 export default nextConfig;
